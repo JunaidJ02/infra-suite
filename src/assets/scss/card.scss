@@ -1,0 +1,106 @@
+.card {
+    background-color: #26283C;
+    border-radius: 5px;
+    margin: 15px;
+    padding: 15px;
+    height: calc(100% - 60px);
+    .card-header {
+        color: #CCCCCC;
+        .card-title{
+            font-size: 24px;
+            font-weight: 100;
+            margin-left: 10px;
+            padding: 15px 0px 20px 0px;
+        }
+    }
+    .card-subtitle {
+        font-size: 16px;
+        font-weight: 100;
+        margin-left: 10px;
+        padding: 5px 0px 20px 0px;
+        color: #9a9a9a;
+    }
+    .card-body-1 {
+        margin: 0px 10px 0px 10px;
+        color: #CCCCCC;
+        height: 85vh;
+        overflow: hidden;
+    }
+    .card-body-2 {
+        margin: 0px 10px 0px 10px;
+        color: #CCCCCC;
+        height: 36vh;
+    }
+    .chart-area {
+        height: 335px;
+        width: 100%;
+    }
+    .chart-area-lg {
+        height: 800px;
+        width: 100%;
+    }
+    .station-area {
+        height: 335px;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: flex-start;
+        overflow: hidden;
+        div {
+            padding: 15px;
+            margin: 10px;
+            text-align: center;
+            border-radius: 5px;
+            box-shadow: 3px 3px 10px #191925;
+            font-size: 18px;
+            font-weight: 100;
+        }
+        .CRITICAL {
+            background-color: #FF232B;
+        }
+        .MAJOR {
+            background-color: rgb(255, 115, 0);
+        }
+        .MINOR {
+            background-color: rgb(255, 165, 0);
+        }
+        .NORMAL {
+            background-color: #00AD59;
+        }
+    }
+    .po-area {
+        height: 345px;
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: flex-start;
+        text-align: center;
+        .owner {
+            width: 150px;
+            text-align: center;
+            margin: 15px;
+            img {
+                border-radius: 100px;
+                border: 3px solid #1f8ef1;
+                padding: 3px;
+                margin: 10px;
+            }
+        }
+    }
+}
+.grafana-card {
+    background-color: #26283C;
+    border-radius: 5px;
+    margin: 15px;
+    padding: 15px;
+    .card-header {
+        color: #CCCCCC;
+        .card-title{
+            font-size: 18px;
+            font-weight: 100;
+            margin-left: 10px;
+            padding: 15px 0px 20px 0px;
+        }
+    }
+}
