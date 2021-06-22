@@ -1,0 +1,69 @@
+{
+    "data": [
+        {
+            "name": "Desktop Engineering",
+            "children": [
+                {
+                    "name": "Device Monitoring",
+                    "url": "/de/dm",
+                    "noChildren": true
+                }
+            ]
+        },
+        {
+            "name": "Enterprise Monitoring",
+            "url": "/em",
+            "children": [
+                {
+                    "name": "Science Logic",
+                    "url": "/em/sl",
+                    "children": [
+                        {
+                            "name": "Health of Collectors",
+                            "url": "/em/sl/hc",
+                            "noChildren": "true"
+                            
+                        },
+                        {
+                            "name": "Health of UI",
+                            "url": "/em/sl/hui",
+                            "noChildren": "true"
+                        }
+                    ]  
+                },
+                {
+                    "name": "AppDynamics",
+                    "url": "/em/ad",
+                    "children": [
+                        {
+                            "name": "Health of Database Collector Servers",
+                            "url": "/em/ad/hdcs",
+                            "noChildren": "true"
+                        },
+                        {
+                            "name": "Health of End User Monitoring",
+                            "url": "/em/ad/heum",
+                            "noChildren": "true"
+                        }
+                    ] 
+                },
+                {
+                    "name": "Grafana",
+                    "url": "/em/gr",
+                    "children": [
+                        {
+                            "name": "Health of Infrastructure",
+                            "url": "/em/gr/hi",
+                            "noChildren": "true"
+                        }
+                    ] 
+                }
+            ]
+        },
+        {
+            "name": "VDI",
+            "url": "/vdi",
+            "noChildren": "true"
+        }
+    ]
+}
