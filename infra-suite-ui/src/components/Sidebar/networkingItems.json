@@ -7,6 +7,16 @@
                     "name": "Device Monitoring",
                     "url": "/de/dm",
                     "noChildren": true
+                },
+                {
+                    "name": "OS Version Info",
+                    "url": "/de/osvi",
+                    "noChildren": true
+                },
+                {
+                    "name": "Patch Compliance",
+                    "url": "/de/pc",
+                    "noChildren": true
                 }
             ]
         },

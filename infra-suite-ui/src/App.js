@@ -11,7 +11,9 @@ import HealthOfUI from './layouts/Health of UI';
 import HealthOfDatabaseCollectorServers from './layouts/Health of Database Collector Servers';
 import HealthOfEndUserMonitoring from './layouts/Health of End User Monitoring';
 import HealthOfInfrastructure from './layouts/Health of Infrastructure';
-import DeviceMonitoring from './layouts/Device Monitoring/Device Monitoring';
+import DeviceMonitoring from './layouts/Desktop Engineering/Device Monitoring/Device Monitoring.js';
+import OSVersionInfo from './layouts/Desktop Engineering/OS Version Info/OS Version Info.js';
+import PatchCompliance from './layouts/Desktop Engineering/Patch Compliance/Patch Compliance';
 
 import './assets/scss/App.scss';
 
@@ -34,6 +36,8 @@ class App extends React.Component {
             <Route path="/em/ad/heum" component={HealthOfEndUserMonitoring}/>
             <Route path="/em/gr/hi" component={HealthOfInfrastructure}/>
             <Route path="/de/dm/" component={DeviceMonitoring}/>
+            <Route path="/de/osvi/" component={OSVersionInfo}/>
+            <Route path="/de/pc/" component={PatchCompliance}/>
           </Switch>
         </Router>
       </div>
