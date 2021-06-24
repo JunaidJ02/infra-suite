@@ -2,7 +2,23 @@
 import React, { useCallback, useState } from "react";
 import { PieChart, Pie, Sector, ResponsiveContainer } from "recharts";
 
+const data = [
+    {
+        TotalClients: 29546,
+        Title: "Windows 10 x86 - February 2021",
+        CI_UniqueID: "ScopeId_FB3B3D41-37BF-4D8D-B313-EF6A2924E8B4\/AuthList_C165B261-BD23-4BD6-8237-76DD8805B37F",
+        name: "Workstations | Active",
+        Installed_Not_Applicable: 29407,
+        Required: 42,
+        Unknown: 97,
+        Compliant: 99.53,
+        NotCompliant: 0.47
+    }
+]
+
+
 const renderActiveShape = (props: any) => {
+    console.log("test");
   const RADIAN = Math.PI / 180;
   const {
     cx,
@@ -61,7 +77,7 @@ const renderActiveShape = (props: any) => {
         y={ey}
         textAnchor={textAnchor}
         fill="#CCCCCC"
-      >{`${value} Devices`}</text>
+      >{`${value} ${payload.description} Devices`}</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
@@ -91,11 +107,11 @@ const PatchComplianceChart = (props) => {
           activeIndex={activeIndex}
           activeShape={renderActiveShape}
           data={props.data}
-          innerRadius={"45%"}
-          outerRadius={"60%"}
-          fill="#8884d8"
-          dataKey="Compliant"
-          nameKey="Title"
+          innerRadius={"65%"}
+          outerRadius={"75%"}
+          fill= {props.color}
+          dataKey="value"
+          nameKey="name"
           onMouseEnter={onPieEnter}
         />
       </PieChart>

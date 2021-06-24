@@ -6,6 +6,7 @@ import { Row } from 'reactstrap';
 import PuffLoader from 'react-spinners/PuffLoader';
 
 import { BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar } from "recharts";
+import PieChart from './Patch Compliance Chart';
 
 import TableUI from '../../../components/TableUI/TableUI';
 import UnderConstruction from "../../../components/UnderConstruction/UnderConstruction";
@@ -14,14 +15,11 @@ import axios from 'axios';
 
 import '../../../assets/scss/layout.scss';
 import '../../../assets/scss/card.scss';
-import { MicNone, SmsOutlined } from '@material-ui/icons';
+import { MicNone, SmsOutlined, ThumbDownSharp } from '@material-ui/icons';
 
-import PieChart from './Patch Compliance Chart';
 import Select from 'react-dropdown-select';
 import styled from '@emotion/styled';
-import makeAnimated from 'react-select/animated';
-
-const animatedComponents = makeAnimated();
+import { keyframes, css } from '@emotion/core';
 
 const patchComplianceData = [
     {
@@ -55,7 +53,7 @@ const patchComplianceData = [
         Required: 308,
         Unknown: 94,
         Compliant: 98.64,
-        NotCompliant: 1.3599999999999999
+        NotCompliant: 1.36
     },
     {
         TotalClients: 29546,
@@ -164,7 +162,7 @@ const patchComplianceData = [
         Installed_Not_Applicable: 1421,
         Required: 27786,
         Unknown: 339,
-        Compliant: 4.8100000000000005,
+        Compliant: 4.81,
         NotCompliant: 95.19
     },
     {
@@ -316,24 +314,29 @@ var installedData = [];
 var compliantData = [];
 var nonCompliantData = []
 
-const desktopDevicesData = [
-    { name: "OptiPlex 7050", value: 8525 },
-    { name: "OptiPlex 5070", value: 3876 },
-    { name: "OptiPlex 7040",value: 2559},
-    { name: "OptiPlex 5060",value: 2386 },
-    { name: "OptiPlex 9020", value: 1005 },
-    { name: "OptiPlex 3080", value: 756 },
-    { name: "OptiPlex 9020M", value: 141 },
-    { name: "OptiPlex 7010", value: 80 },
-    { name: "OptiPlex 5080", value: 15 },
-    { name: "OptiPlex 790", value: 7 },
-    { name: "OptiPlex 780", value: 2 },
-    { name: "OptiPlex 7050-China HDD Protection", value: 1 },
-    { name: "OptiPlex 760", value: 5 },
-    { name: "OptiPlex 3060", value: 9 }
-   ];
+    const hide = keyframes`
+    from {
+      transition: height 310ms ease;
+    }
+    to {
+      transition: height 310ms ease;
+      height: 0;
+      opacity: 0;
+    }
+  `;
+  const show = keyframes`
+    from {
+      transition: height 310ms ease;
+      height: 0;
+      opacity: 0;
+    }
+    to {
+      transition: height 310ms ease;
+    }
+  `;
 
 const StyledSelect = styled(Select)`
+  transition: all 0.3s ease-out;
   background: #333;
   border: #333 !important;
   color: #fff;
@@ -345,6 +348,7 @@ const StyledSelect = styled(Select)`
   }
   .react-dropdown-select-option {
     border: 1px solid #fff;
+    transition: all 0.3s ease-out;
   }
   .react-dropdown-select-item {
     color: #333;
@@ -367,6 +371,15 @@ const StyledSelect = styled(Select)`
     background: #333;
     box-shadow: none;
     color: #fff !important;
+    height: 310px;
+    ${({ isOpen }) =>
+      isOpen
+        ? css`
+            animation: ${hide} 310ms ease-in-out;
+          `
+        : css`
+            animation: ${show} 310ms ease-in-out;
+          `};
   }
   .react-dropdown-select-item {
     color: #f2f2f2;
@@ -389,6 +402,18 @@ const StyledSelect = styled(Select)`
   }
 `;
 
+var patchData = [
+    {
+        name: "Office - April 2021",
+        value: "95.03",
+        description: " Compliant",
+    },
+    {
+        name: "Office - April 2021",
+        value: "4.97",
+        description: " Non Compliant",
+    },
+]
 
 
 class PatchCompliance extends React.Component {
@@ -397,83 +422,77 @@ class PatchCompliance extends React.Component {
         installedBold: true,
         compliantBold: false,
         nonCompliantBold: false,
-        currentOption: "Installed",
+        currentOption: patchComplianceData.find((element) => { return element.Title == "Office - April 2021"}),
         currentData: installedData,
         doneLoading: true,
+        color: "#CA0B00"
     };
 
-    handleInstalledClick = () => {
-        this.setState({ doneLoading: false});
-        this.setState({ installedBold: true});
-        this.setState({ compliantBold: false});
-        this.setState({ nonCompliantBold: false});
-        this.setState({ currentData: patchComplianceData.map((item) => ({Title: item.Title, Installed: item.Installed_Not_Applicable}))});
-        this.setState({ currentOption: "Installed"});
+    componentDidMount() {
+        // this.handleChange(patchData);
     }
-    
-    handleCompliantClick = () => {
-        this.setState({ doneLoading: false});
-        this.setState({ installedBold: false});
-        this.setState({ compliantBold: true});
-        this.setState({ nonCompliantBold: false});
-        this.setState({ currentData: patchComplianceData.map((item) => ({Title: item.Title, Compliant: item.Compliant}))});
-        this.setState({ currentOption: "Compliant"});
+
+    handleChange = (newOption) => {
+        this.setState({currentOption: patchComplianceData.find((element) => { return element.Title == newOption[0].value})}, this.makeList);
+        console.log(this.state.currentOption);
     }
-    
-    handleNonCompliantClick = () => {
-        this.setState({ doneLoading: false});
-        this.setState({ installedBold: false});
-        this.setState({ compliantBold: false});
-        this.setState({ nonCompliantBold: true});
-        this.setState({ currentData: patchComplianceData.map((item) => ({Title: item.Title, NonCompliant: item.NotCompliant}))});
-        this.setState({ currentOption: "NonCompliant"});
+
+    makeList = () => {
+        patchData = [
+            {
+                name: "",
+                value: "",
+                description: " Compliant",
+            },
+            {
+                name: "",
+                value: "",
+                description: " Non Compliant",
+            },
+        ];
+        patchData[0].name = this.state.currentOption.Title;
+        patchData[0].value = this.state.currentOption.Compliant;
+        patchData[1].name = this.state.currentOption.Title;
+        patchData[1].value = this.state.currentOption.NotCompliant;
+        this.setState({currentOption: patchData}, this.handleColor);
+    }
+
+    handleColor = () => {
+        if (this.state.currentOption[1].value > this.state.currentOption[0].value) {
+            this.setState({ color: "#CA0B00"}, this.doneChange)
+        } else {
+            this.setState({ color: "#008000"}, this.doneChange)
+        }
+    }
+
+    doneChange = () => {
+        console.log(this.state.currentOption);
     }
 
     render() {
-        // this.handleInstalledClick();
-        const data = patchComplianceData.map((item) => ({name: item.Title, Compliant: item.Compliant}));
-        var titles = [];
-        for (var i = 0; i < patchComplianceData.length; i++) {
-            titles.push(patchComplianceData[i].Title);
-        }
+        const titles = patchComplianceData.map((item) => ({value: item.Title, label: item.Title})); 
         const { installedBold, compliantBold,  nonCompliantBold, currentOption, currentData, doneLoading} = this.state;
-        console.log(titles);
         return (
             <div className="mainSection">
                 <Container>
-                    <Row className="row-4">
+                    <Row className="row-4" style={{height: "15%"}}>
                         <Col className="col-12">
                             <Card className="contact-block">
                                 <CardHeader>
                                     <h1>Patch Compliance</h1>
-                                    <>
-                                        <span style = {{
-                                                    fontWeight: (installedBold === true ? 'bold' : 'normal'),
-                                                    textDecorationLine: (installedBold === true ? 'underline' : 'none'),
-                                                    cursor:'pointer',
-                                                }} 
-                                                onClick={this.handleInstalledClick}> 
-                                            {"Installed"} 
-                                        </span>
-                                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> 
-                                        <span style = {{
-                                                    fontWeight: (compliantBold === true ? 'bold' : 'normal'),
-                                                    textDecorationLine: (compliantBold === true ? 'underline' : 'none'),
-                                                    cursor:'pointer'
-                                                }} 
-                                                onClick={this.handleCompliantClick}> 
-                                            {"Compliant"} 
-                                        </span>
-                                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> 
-                                        <span style = {{
-                                                    fontWeight: (nonCompliantBold === true ? 'bold' : 'normal'),
-                                                    textDecorationLine: (nonCompliantBold === true ? 'underline' : 'none'),
-                                                    cursor:'pointer'
-                                                }} 
-                                                onClick={this.handleNonCompliantClick}> 
-                                            {"Non-Compliant"} 
-                                        </span>
-                                    </>
+                                </CardHeader>
+                            </Card>
+                        </Col>
+                    </Row>
+                    <Row className="row-2" style={{height: "13%"}}>
+                        <Col className="col-12">
+                            <Card className="contact-block" style={{width: "54%"}}>
+                                <CardHeader>
+                                    <StyledSelect
+                                        options={titles}
+                                        values={[]}
+                                        onChange={(value) => this.handleChange(value)}
+                                    />
                                 </CardHeader>
                             </Card>
                         </Col>
@@ -481,14 +500,9 @@ class PatchCompliance extends React.Component {
                     <Row className="row-2">
                         <Col className="col-12">
                             <Card className="contact-block">
-                                <StyledSelect
-                                    options={titles}
-                                    values={[]}
-                                    onChange={(value) => console.log(value)}
-                                />
-                                <CardBody>
-                                    {/* <PieChart data={data}/> */}
-                                </CardBody>
+                                <CardHeader>
+                                    <PieChart data={this.state.currentOption} color={this.state.color}/>
+                                </CardHeader>
                             </Card>
                         </Col>
                     </Row>
